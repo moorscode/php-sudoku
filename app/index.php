@@ -2,7 +2,7 @@
 
 namespace Sudoku;
 
-require '../vendor/autoload.php';
+require dirname( __DIR__ ) . 'vendor/autoload.php';
 
 error_reporting( -1 );
 ini_set( 'display_errors', 'on' );
