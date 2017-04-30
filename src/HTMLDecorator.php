@@ -6,8 +6,12 @@ class HTMLDecorator {
 	public function decorate( Board $board, $showOptions = true ) {
 
 		$cells = $this->flip( $board->getBoard() );
+		$boardSize = $board->getSize();
 
-		echo '<table border="1">';
+		$groups    = sqrt( $boardSize );
+		$groupSize = $boardSize / $groups;
+
+		echo '<table style="border: 2px solid black; margin-bottom: 1em;" cellpadding="4" cellspacing="0">';
 		foreach ( $cells as $x => $_x ) {
 			echo '<tr>';
 			/**
@@ -20,7 +24,16 @@ class HTMLDecorator {
 					$data    = sprintf( '<em style="color: #aaa;">%s</em>', implode( ',', $options ) );
 				}
 
-				echo '<td>' . $data . '</td>';
+				$border = 'border: 1px solid #ddd; min-width: 20px; text-align: center; min-height: 20px; vertical-align: middle;';
+
+				if ( ( $x + 1 ) % $groupSize === 0 && $x + 1 < $boardSize ) {
+					$border .= 'border-bottom: 2px solid black;';
+				}
+				if ( ( $y + 1 ) % $groupSize === 0 && $y + 1 < $boardSize ) {
+					$border .= 'border-right: 2px solid black;';
+				}
+
+				printf( '<td style="%s">%s</td>', $border, $data );
 			}
 			echo '</tr>';
 		}

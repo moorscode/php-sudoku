@@ -3,6 +3,8 @@
 namespace Sudoku;
 
 class Board {
+	use FlattenCollection;
+
 	protected $boardSize = 9;
 	protected $board = [ [] ];
 
@@ -29,6 +31,23 @@ class Board {
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function done() {
+		$cells = [];
+		foreach ( $this->board as $x => $_x ) {
+			foreach ( $_x as $y => $cell ) {
+				$cells[] = $cell;
+			}
+		}
+
+		return count( array_filter( $this->flatten( $cells ) ) ) === ( $this->boardSize * $this->boardSize );
+	}
+
+	/**
+	 *
+	 */
 	protected function initialize() {
 		foreach ( range( 0, $this->boardSize - 1 ) as $x ) {
 			foreach ( range( 0, $this->boardSize - 1 ) as $y ) {
@@ -38,39 +57,10 @@ class Board {
 	}
 
 	/**
-	 * @return Coords
+	 * @return int
 	 */
-	public function unfilled() {
-		/**
-		 * @var int   $x
-		 * @var array $_x
-		 */
-		foreach ( $this->board as $x => $_x ) {
-			/**
-			 * @var int  $y
-			 * @var Cell $cell
-			 */
-			foreach ( $this->board[ $x ] as $y => $cell ) {
-				if ( null === $cell->get() ) {
-					yield new Coords( $x, $y );
-				}
-			}
-		}
-
-		return null;
-	}
-
 	public function getSize() {
 		return $this->boardSize;
-	}
-
-	/**
-	 * @param array $coords
-	 *
-	 * @return Coords
-	 */
-	protected function getCoords( array $coords ) {
-		return new Coords( $coords[0], $coords[1] );
 	}
 
 	/**
@@ -95,5 +85,12 @@ class Board {
 	 */
 	public function getBoard() {
 		return $this->board;
+	}
+
+	/**
+	 *
+	 */
+	public function __clone() {
+		$this->board = unserialize( serialize( $this->board ) );
 	}
 }

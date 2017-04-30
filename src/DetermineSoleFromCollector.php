@@ -18,14 +18,15 @@ trait DetermineSoleFromCollector {
 		}
 
 		// Determine the options of the other items in the row.
-		$cells  = $collector->get( $board, $coords );
+		$cells = $collector->get( $board, $coords );
 
+		/** @var Cell $rowCell */
 		foreach ( $cells as $rowCell ) {
 			if ( $rowCell === $cell ) {
 				continue;
 			}
 			$cellOptions = $rowCell->getOptions();
-			$options      = array_diff( $options, $cellOptions );
+			$options     = array_values( array_diff( $options, $cellOptions ) );
 		}
 
 		if ( count( $options ) === 1 ) {

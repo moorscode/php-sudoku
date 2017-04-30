@@ -23,19 +23,19 @@ class GroupCollector implements CollectorInterface {
 	 */
 	public function get( Board $board, Coords $coords ) {
 		$boardSize = $board->getSize();
-		$groups    = sqrt( $boardSize );
 
+		$groups    = sqrt( $boardSize );
 		$groupSize = $boardSize / $groups;
 
 		$startX = floor( $coords->x() / $groupSize ) * $groupSize;
 		$startY = floor( $coords->y() / $groupSize ) * $groupSize;
 
-		$endX = $startX + $groupSize;
-		$endY = $startY + $groupSize;
+		$endX = $startX + $groupSize - 1;
+		$endY = $startY + $groupSize - 1;
 
 		$cells = [];
-		foreach ( range( $startX, $endX - 1 ) as $x ) {
-			foreach ( range( $startY, $endY - 1 ) as $y ) {
+		foreach ( range( $startX, $endX ) as $x ) {
+			foreach ( range( $startY, $endY ) as $y ) {
 				$cells[] = $board->get( new Coords( $x, $y ) );
 			}
 		}

@@ -6,11 +6,11 @@ use Sudoku\Board;
 use Sudoku\Cell;
 use Sudoku\Collectors\GroupCollector;
 use Sudoku\Coords;
-use Sudoku\DetermineSoleFromCollector;
+use Sudoku\DeterminePairFromCollector;
 
-class SoleGroupCandidate implements AlgorithmInterface {
+class PairGroupCandidates implements AlgorithmInterface {
 
-	use DetermineSoleFromCollector;
+	use DeterminePairFromCollector;
 
 	/**
 	 * @param Board  $board
@@ -19,6 +19,6 @@ class SoleGroupCandidate implements AlgorithmInterface {
 	 * @return Cell
 	 */
 	public function run( Board $board, Coords $coords ) {
-		return $this->setSoleFromCollector( new GroupCollector(), $board, $coords );
+		return $this->findPairCandidates( new GroupCollector(), $board, $coords );
 	}
 }

@@ -23,7 +23,7 @@ trait ApplyCollector {
 		// Determine options.
 		$group = $collector->get( $board, $coords );
 
-		$available = array_intersect( $this->getOptions(), $this->flatten( $group ) );
+		$available = array_intersect( range( 1, $board->getSize() ), $this->flatten( $group ) );
 		array_map( [ $cell, 'removeOption' ], $available );
 
 		return $cell;
