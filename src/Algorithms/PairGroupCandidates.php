@@ -9,7 +9,6 @@ use Sudoku\Coords;
 use Sudoku\DeterminePairFromCollector;
 
 class PairGroupCandidates implements AlgorithmInterface {
-
 	use DeterminePairFromCollector;
 
 	/**

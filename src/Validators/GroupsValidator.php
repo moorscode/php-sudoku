@@ -31,7 +31,7 @@ class GroupsValidator implements ValidatorInterface {
 		$valid = true;
 		foreach ( range( 1, $boardSize, $groups ) as $column ) {
 			foreach ( range( 1, $boardSize, $groups ) as $row ) {
-				$cells = $collector->get( $board, new Coords( $column - 1, $row - 1 ) );
+				$cells = $collector->collect( $board, new Coords( $column - 1, $row - 1 ) );
 
 				// valid if all numbers occur only once.
 				$numbers = array_map( function ( $cell ) {

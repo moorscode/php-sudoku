@@ -17,14 +17,20 @@ class Cell {
 		if ( $this->number !== null ) {
 			$this->options = [];
 		}
+
+		return $this;
 	}
 
 	public function addOption( $option ) {
 		$this->options[ $option ] = true;
+
+		return $this;
 	}
 
 	public function removeOption( $option ) {
 		unset( $this->options[ $option ] );
+
+		return $this;
 	}
 
 	public function getOptions() {

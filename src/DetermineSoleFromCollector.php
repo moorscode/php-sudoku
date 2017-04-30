@@ -5,12 +5,15 @@ namespace Sudoku;
 use Sudoku\Collectors\CollectorInterface;
 
 trait DetermineSoleFromCollector {
+	/**
+	 * @param CollectorInterface $collector
+	 * @param Board              $board
+	 * @param Coords             $coords
+	 *
+	 * @return Cell
+	 */
 	protected function setSoleFromCollector( CollectorInterface $collector, Board $board, Coords $coords ) {
-		$cell = $board->get( $coords );
-		if ( null !== $cell->get() ) {
-			return $cell;
-		}
-
+		$cell    = $board->get( $coords );
 		$options = $cell->getOptions();
 
 		if ( count( $options ) < 2 ) {
@@ -18,19 +21,19 @@ trait DetermineSoleFromCollector {
 		}
 
 		// Determine the options of the other items in the row.
-		$cells = $collector->get( $board, $coords );
+		$cells = $collector->collect( $board, $coords );
 
-		/** @var Cell $rowCell */
-		foreach ( $cells as $rowCell ) {
-			if ( $rowCell === $cell ) {
+		foreach ( $cells as $_cell ) {
+			if ( $_cell === $cell ) {
 				continue;
 			}
-			$cellOptions = $rowCell->getOptions();
-			$options     = array_values( array_diff( $options, $cellOptions ) );
+
+			$cellOptions = $_cell->getOptions();
+			$options     = array_diff( $options, $cellOptions );
 		}
 
 		if ( count( $options ) === 1 ) {
-			$cell->set( $options[0] );
+			$cell->set( current( $options ) );
 		}
 
 		return $cell;

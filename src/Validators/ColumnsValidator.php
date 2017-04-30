@@ -27,7 +27,7 @@ class ColumnsValidator implements ValidatorInterface {
 
 		$valid = true;
 		foreach ( $expected as $column ) {
-			$cells = $collector->get( $board, new Coords( $column - 1, 0 ) );
+			$cells = $collector->collect( $board, new Coords( $column - 1, 0 ) );
 
 			// valid if all numbers occur only once.
 			$numbers = array_map( function ( $cell ) {

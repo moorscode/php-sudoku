@@ -11,17 +11,16 @@ class Board {
 	/**
 	 * Board constructor.
 	 *
-	 * @param int   $boardSize
 	 * @param array $known
 	 */
-	public function __construct( $boardSize, array $known = array() ) {
-		$this->boardSize = $boardSize;
+	public function __construct( array $known ) {
+		$this->boardSize = count( $known[0] );
 
 		$this->initialize();
 
 		if ( $known ) {
-			foreach ( $known as $y => $row ) {
-				foreach ( $row as $x => $number ) {
+			foreach ( $known as $x => $row ) {
+				foreach ( $row as $y => $number ) {
 					$coord = new Coords( $x, $y );
 					$cell  = $this->get( $coord );
 					$cell->set( $number );
@@ -51,7 +50,7 @@ class Board {
 	protected function initialize() {
 		foreach ( range( 0, $this->boardSize - 1 ) as $x ) {
 			foreach ( range( 0, $this->boardSize - 1 ) as $y ) {
-				$this->board[ $x ][ $y ] = new Cell( range( 1, $this->boardSize ) );
+				$this->board[ $y ][ $x ] = new Cell( range( 1, $this->boardSize ) );
 			}
 		}
 	}
@@ -68,7 +67,7 @@ class Board {
 	 * @param Cell   $cell
 	 */
 	public function set( Coords $coords, Cell $cell ) {
-		$this->board[ $coords->x() ][ $coords->y() ] = $cell;
+		$this->board[ $coords->y() ][ $coords->x() ] = $cell;
 	}
 
 	/**
@@ -77,7 +76,7 @@ class Board {
 	 * @return Cell
 	 */
 	public function get( Coords $coords ) {
-		return $this->board[ $coords->x() ][ $coords->y() ];
+		return $this->board[ $coords->y() ][ $coords->x() ];
 	}
 
 	/**

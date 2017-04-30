@@ -6,6 +6,10 @@ use Sudoku\Board;
 
 class Validator implements ValidatorInterface {
 	public function validate( Board $board ) {
+		if ( ! $board->done() ) {
+			return false;
+		}
+
 		$validators = [
 			new RowsValidator(),
 			new ColumnsValidator(),
@@ -13,7 +17,7 @@ class Validator implements ValidatorInterface {
 		];
 
 		$valid = true;
-		foreach( $validators as $validator ) {
+		foreach ( $validators as $validator ) {
 			$valid = $valid && $validator->validate( $board );
 		}
 

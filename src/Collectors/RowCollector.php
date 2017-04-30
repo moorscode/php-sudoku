@@ -14,14 +14,24 @@ class RowCollector implements CollectorInterface {
 	 *
 	 * @return Cell[]
 	 */
-	public function get( Board $board, Coords $coords ) {
+	public function collect( Board $board, Coords $coords ) {
+		return array_map( [ $board, 'get' ], $this->getCoords( $board, $coords ) );
+	}
+
+	/**
+	 * @param Board  $board
+	 * @param Coords $coords
+	 *
+	 * @return Coords[] Coords of the cells.
+	 */
+	public function getCoords( Board $board, Coords $coords ) {
 		$boardSize = $board->getSize();
 
 		// Row = Y
 		$cells = [];
 
-		foreach ( range( 0, $boardSize - 1 ) as $y ) {
-			$cells[] = $board->get( new Coords( $coords->x(), $y ) );
+		foreach ( range( 1, $boardSize ) as $y ) {
+			$cells[] = new Coords( $coords->x(), $y - 1 );
 		}
 
 		return $cells;

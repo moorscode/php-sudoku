@@ -21,7 +21,17 @@ class GroupCollector implements CollectorInterface {
 	 *
 	 * @return Cell[]
 	 */
-	public function get( Board $board, Coords $coords ) {
+	public function collect( Board $board, Coords $coords ) {
+		return array_map( [ $board, 'get' ], $this->getCoords( $board, $coords ) );
+	}
+
+	/**
+	 * @param Board  $board
+	 * @param Coords $coords
+	 *
+	 * @return Coords[] Coords of the cells.
+	 */
+	public function getCoords( Board $board, Coords $coords ) {
 		$boardSize = $board->getSize();
 
 		$groups    = sqrt( $boardSize );
@@ -36,7 +46,7 @@ class GroupCollector implements CollectorInterface {
 		$cells = [];
 		foreach ( range( $startX, $endX ) as $x ) {
 			foreach ( range( $startY, $endY ) as $y ) {
-				$cells[] = $board->get( new Coords( $x, $y ) );
+				$cells[] = new Coords( $x, $y );
 			}
 		}
 

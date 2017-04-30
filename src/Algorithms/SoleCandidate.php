@@ -15,11 +15,7 @@ class SoleCandidate implements AlgorithmInterface {
 	 * @return Cell
 	 */
 	public function run( Board $board, Coords $coords ) {
-		$cell = $board->get( $coords );
-		if ( null !== $cell->get() ) {
-			return $cell;
-		}
-
+		$cell    = $board->get( $coords );
 		$options = $cell->getOptions();
 
 		if ( count( $options ) === 1 ) {

@@ -16,12 +16,12 @@ trait ApplyCollector {
 	 */
 	protected function applyCollector( CollectorInterface $collector, Board $board, Coords $coords ) {
 		$cell = $board->get( $coords );
-		if ( null !== $cell->get() ) {
+		if ( $cell->get() ) {
 			return $cell;
 		}
 
 		// Determine options.
-		$group = $collector->get( $board, $coords );
+		$group = $collector->collect( $board, $coords );
 
 		$available = array_intersect( range( 1, $board->getSize() ), $this->flatten( $group ) );
 		array_map( [ $cell, 'removeOption' ], $available );

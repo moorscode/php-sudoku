@@ -14,14 +14,22 @@ class ColumnCollector implements CollectorInterface {
 	 *
 	 * @return Cell[]
 	 */
-	public function get( Board $board, Coords $coords ) {
+	public function collect( Board $board, Coords $coords ) {
+		return array_map( [ $board, 'get' ], $this->getCoords( $board, $coords ) );
+	}
+
+	/**
+	 * @param Board  $board
+	 * @param Coords $coords
+	 *
+	 * @return Coords[] Coords of the cells.
+	 */
+	public function getCoords( Board $board, Coords $coords ) {
 		$boardSize = $board->getSize();
 
-		// Column = X
 		$cells = [];
-
-		foreach ( range( 0, $boardSize - 1 ) as $x ) {
-			$cells[] = $board->get( new Coords( $x, $coords->y() ) );
+		foreach ( range( 1, $boardSize ) as $x ) {
+			$cells[] = new Coords( $x - 1, $coords->y() );
 		}
 
 		return $cells;

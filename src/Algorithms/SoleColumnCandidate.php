@@ -9,7 +9,6 @@ use Sudoku\Coords;
 use Sudoku\DetermineSoleFromCollector;
 
 class SoleColumnCandidate implements AlgorithmInterface {
-
 	use DetermineSoleFromCollector;
 
 	/**

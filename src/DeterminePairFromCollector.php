@@ -5,6 +5,13 @@ namespace Sudoku;
 use Sudoku\Collectors\CollectorInterface;
 
 trait DeterminePairFromCollector {
+	/**
+	 * @param CollectorInterface $collector
+	 * @param Board              $board
+	 * @param Coords             $coords
+	 *
+	 * @return Cell
+	 */
 	protected function findPairCandidates( CollectorInterface $collector, Board $board, Coords $coords ) {
 		$cell = $board->get( $coords );
 		if ( null !== $cell->get() ) {
@@ -12,27 +19,26 @@ trait DeterminePairFromCollector {
 		}
 
 		// Determine the options of the other items in the row.
-		$cells = $collector->get( $board, $coords );
+		$cells = $collector->collect( $board, $coords );
 		$this->removePairCandidates( $cell, $cells );
 
 		return $cell;
 	}
 
 	/**
-	 * @param Cell  $cell
-	 * @param array $cells
+	 * @param Cell   $cell
+	 * @param Cell[] $cells
 	 */
 	protected function removePairCandidates( Cell $cell, array $cells ) {
 		$options = $cell->getOptions();
 		if ( count( $options ) !== 2 ) {
-			return $cell;
+			return;
 		}
 
 		// Find paired cells; with two matching options.
 		// Remove the options from the other cells in the group.
 		$remove = [];
 
-		/** @var Cell $test */
 		foreach ( $cells as $index => $test ) {
 			if ( $cell === $test ) {
 				unset( $cells[ $index ] );
@@ -48,12 +54,9 @@ trait DeterminePairFromCollector {
 		}
 
 		if ( [] !== $remove ) {
-			/** @var Cell $groupCell */
-			foreach ( $cells as $groupCell ) {
-				array_map( [ $groupCell, 'removeOption' ], $remove );
+			foreach ( $cells as $_cell) {
+				array_map( [ $_cell, 'removeOption' ], $remove );
 			}
 		}
-
-		return $cells;
 	}
 }
