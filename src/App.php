@@ -27,6 +27,7 @@ class App {
 		$decorator = new HTMLDecorator();
 
 		$board = new Board( $boardSize, $known );
+		$decorator->decorate( $board, false );
 
 		$this->addAlgorithm( new DetermineColumnCandidates() );
 		$this->addAlgorithm( new DetermineRowCandidates() );
