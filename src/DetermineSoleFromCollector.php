@@ -28,8 +28,7 @@ trait DetermineSoleFromCollector {
 				continue;
 			}
 
-			$cellOptions = $_cell->getOptions();
-			$options     = array_diff( $options, $cellOptions );
+			$options = array_diff( $options, $_cell->getOptions() );
 		}
 
 		if ( count( $options ) === 1 ) {

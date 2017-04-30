@@ -2,6 +2,8 @@
 
 namespace Sudoku;
 
+use Sudoku\Exceptions\InvalidMoveException;
+
 class Cell {
 	protected $number;
 	protected $options = [];
@@ -29,6 +31,10 @@ class Cell {
 
 	public function removeOption( $option ) {
 		unset( $this->options[ $option ] );
+
+		if ( empty( $this->options ) && empty( $this->number ) ) {
+			throw new InvalidMoveException();
+		}
 
 		return $this;
 	}
