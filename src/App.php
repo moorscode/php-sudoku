@@ -12,7 +12,6 @@ use Sudoku\Algorithms\SoleRowCandidate;
 use Sudoku\Algorithms\SoleColumnCandidate;
 use Sudoku\Exceptions\DepthException;
 use Sudoku\Exceptions\InvalidMoveException;
-use Sudoku\Factories\CollectorFactory;
 use Sudoku\Validators\Validator;
 
 class App {
@@ -25,8 +24,6 @@ class App {
 		$player     = new Player();
 		$validator  = new Validator();
 		$variations = new Variations();
-
-		$factory = new CollectorFactory();
 
 		$player->addAlgorithm( new DetermineColumnCandidates() );
 		$player->addAlgorithm( new DetermineRowCandidates() );
