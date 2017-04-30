@@ -17,34 +17,34 @@ use Sudoku\Validators\Validator;
 class App {
 	protected $variationCount = 0;
 	protected $boards = [];
-	protected $tree = [];
 
 	public function __construct( Board $board ) {
-		$decorator  = new HTMLDecorator();
-		$player     = new Player();
-		$validator  = new Validator();
-		$variations = new Variations();
+		$decorator = new HTMLDecorator();
 
-		$player->addAlgorithm( new DetermineColumnCandidates() );
-		$player->addAlgorithm( new DetermineRowCandidates() );
-		$player->addAlgorithm( new DetermineGroupCandidates() );
+		$this->player     = new Player();
+		$this->validator  = new Validator();
+		$this->variations = new Variations();
 
-		$player->addAlgorithm( new SoleCandidate() );
-		$player->addAlgorithm( new SoleRowCandidate() );
-		$player->addAlgorithm( new SoleGroupCandidate() );
-		$player->addAlgorithm( new SoleColumnCandidate() );
+		$this->player->addAlgorithm( new DetermineColumnCandidates() );
+		$this->player->addAlgorithm( new DetermineRowCandidates() );
+		$this->player->addAlgorithm( new DetermineGroupCandidates() );
 
-		$player->addAlgorithm( new PairGroupCandidates() );
+		$this->player->addAlgorithm( new SoleCandidate() );
+		$this->player->addAlgorithm( new SoleRowCandidate() );
+		$this->player->addAlgorithm( new SoleGroupCandidate() );
+		$this->player->addAlgorithm( new SoleColumnCandidate() );
+
+		$this->player->addAlgorithm( new PairGroupCandidates() );
 
 		$decorator->decorate( $board, false );
 
 		$start = microtime( true );
 
-		if ( ! $this->complete( $player, $board, $validator ) ) {
+		if ( ! $this->complete( $board ) ) {
 			foreach ( [ 0, 1, 3, 10, 15 ] as $maxDepth ) {
 				$this->maxDepth = $maxDepth;
 
-				$result = $this->runVariations( $board, $variations, $player, $validator );
+				$result = $this->runVariations( $board );
 				if ( $result ) {
 					$board = $result;
 					break;
@@ -52,48 +52,43 @@ class App {
 			}
 		}
 
-		printf( '<p>Algorithm calls: %d<br/>Time (after %d variations): %fms</p>', $player->getAlgorithmCalls(), $this->variationCount, microtime( true ) - $start );
+		printf( '<p>Algorithm calls: %d<br/>Time (after %d variations): %fms</p>', $this->player->getAlgorithmCalls(), $this->variationCount, microtime( true ) - $start );
 
-		if ( $validator->validate( $board ) ) {
+		if ( $this->validator->validate( $board ) ) {
 			echo '<p>Solution has been found!</p>';
 			$decorator->decorate( $board );
 		}
 	}
 
 	/**
-	 * @param Player    $player
-	 * @param Board     $board
-	 * @param Validator $validator
+	 * @param Board $board
 	 *
 	 * @return bool
 	 */
-	protected function complete( Player $player, Board $board, Validator $validator ) {
-		$player->play( $board );
+	protected function complete( Board $board ) {
+		$this->player->play( $board );
 
-		return $validator->validate( $board );
+		return $this->validator->validate( $board );
 	}
 
 	/**
-	 * @param Board      $board
-	 * @param Variations $variations
-	 * @param Player     $player
-	 * @param Validator  $validator
-	 * @param int        $depth
+	 * @param Board $board
+	 * @param int   $depth
 	 *
 	 * @return Board
 	 * @throws DepthException
 	 */
-	protected function runVariations( Board $board, Variations $variations, Player $player, Validator $validator, $depth = 0 ) {
+	protected function runVariations( Board $board, $depth = 0 ) {
 		if ( $depth > $this->maxDepth ) {
 			throw new DepthException();
 		}
 
-		foreach ( $variations->variation( $board ) as $variation ) {
+		foreach ( $this->variations->variation( $board ) as $variation ) {
 			$hash = BoardHasher::hash( $variation );
 			if ( ! array_key_exists( $hash, $this->boards ) ) {
 				$this->variationCount ++;
 
-				if ( $this->complete( $player, $variation, $validator ) ) {
+				if ( $this->complete( $variation ) ) {
 					return $variation;
 				}
 
@@ -103,7 +98,7 @@ class App {
 			$variation = $this->boards[ $hash ];
 
 			try {
-				$test = $this->runVariations( $variation, $variations, $player, $validator, ++ $depth );
+				$test = $this->runVariations( $variation, ++ $depth );
 				if ( null !== $test ) {
 					return $test;
 				}
