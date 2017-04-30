@@ -48,41 +48,33 @@ class App {
 
 		$initial = microtime( true );
 
+		$triedVariations = 0;
 		if ( ! $board->done() ) {
-			$triedVariations = 0;
-
-			$startBoard = clone $board;
-			$variations = $this->getVariation( $startBoard );
-			while ( $variations->valid() ) {
-				$variation = $variations->current();
+			foreach ( $this->getVariation( clone $board ) as $variation ) {
+				$triedVariations ++;
 				$this->tryAllMoves( $variation );
 				if ( $variation->done() ) {
 					$board = $variation;
 					break;
 				}
-				$variations->next();
-				++ $triedVariations;
 			}
-			printf( '%d variations tried.<br/>', $triedVariations );
 		}
-
-		printf( 'Initial: %fms<br/>Total: %fms<br/>', $initial - $start, microtime( true ) - $start );
 
 		$validator = new Validator();
 		if ( $validator->validate( $board ) ) {
-			echo 'Board is valid!<br/>';
+			echo '<p>Solution has been found!</p>';
+			$decorator->decorate( $board );
 		}
 
-		$decorator->decorate( $board );
 
-		printf( 'Algorithm calls: %d<br/>', $this->algorithmCalls );
-//		var_dump( $this->success );
+		printf( '<p>Algorithm calls: %d</p>', $this->algorithmCalls );
+		printf( '<p>Initial: %fms<br/>Total (after %d variations): %fms</p>', $initial - $start, $triedVariations, microtime( true ) - $start );
 	}
 
 	/**
 	 * @param Board $board
 	 *
-	 * @return \Generator|Board
+	 * @return \Generator
 	 */
 	protected function getVariation( Board $board ) {
 		$boardSize = $board->getSize();
