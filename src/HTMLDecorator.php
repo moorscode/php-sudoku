@@ -3,13 +3,44 @@
 namespace Sudoku;
 
 class HTMLDecorator {
+
+	public function head() {
+		echo <<<EO_HTML
+<html>
+<head>
+<style>
+html, body {
+	padding: 0;
+	margin: 0;
+	font-size: 100%;
+}
+body {
+	padding: 2em;
+	font-family: Verdana;
+	font-size: 1em;
+}
+</style>
+</head>
+<body>
+EO_HTML;
+	}
+
+	public function toes() {
+		echo <<<EO_HTML
+</body>
+</html>
+EO_HTML;
+
+	}
+
 	/**
 	 * @param BoardInterface $board
 	 * @param bool           $showOptions
+	 * @param array          $highlight
 	 */
-	public function decorate( BoardInterface $board, $showOptions = true ) {
+	public function decorate( BoardInterface $board, $showOptions = true, array $highlight = array() ) {
 
-		$cells = $this->flip( $board->getBoard() );
+		$cells     = $this->flip( $board->getBoard() );
 		$boardSize = $board->getSize();
 
 		$groups    = sqrt( $boardSize );
@@ -35,6 +66,10 @@ class HTMLDecorator {
 				}
 				if ( ( $y + 1 ) % $groupSize === 0 && $y + 1 < $boardSize ) {
 					$border .= 'border-right: 2px solid black;';
+				}
+
+				if ( in_array( new Coords( $x, $y ), $highlight, false ) ) {
+					$border .= 'font-weight: bold;';
 				}
 
 				printf( '<td style="%s">%s</td>', $border, $data );

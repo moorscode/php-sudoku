@@ -58,19 +58,23 @@ class BoardHistory implements BoardInterface {
 		foreach ( $this->history as $step ) {
 			$this->boardLayout[ $step->coords->y() ][ $step->coords->x() ] = new Cell();
 		}
-		$this->historyIndex = 0;
+		$this->historyIndex = -1;
 	}
 
 	public function historyStep() {
-		if ( ! isset( $this->history[ $this->historyIndex ] ) ) {
+		if ( ! isset( $this->history[ $this->historyIndex + 1] ) ) {
 			return false;
 		}
 
-		$step = $this->history[ $this->historyIndex ++ ];
+		$step = $this->history[ ++$this->historyIndex ];
 
 		$this->boardLayout[ $step->coords->y() ][ $step->coords->x() ] = $step->cell;
 
 		return true;
+	}
+
+	public function lastCell() {
+		return $this->history[ $this->historyIndex ];
 	}
 
 	protected function addHistory( Coords $coords, Cell $cell ) {

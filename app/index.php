@@ -15,17 +15,26 @@ $board  = new Board( $loader->load( filter_input( INPUT_GET, 'game', FILTER_SANI
 $board  = new BoardHistory( $board );
 
 $decorator = new HTMLDecorator();
+$decorator->head();
 $decorator->decorate( $board, false );
 
 $sudoko = new Sudoku( $board );
-$final  = $sudoko->play();
+
+/** @var BoardHistory $final */
+$final = $sudoko->play();
 
 $final->rewind();
 $final->getHistorySteps();
 
+// Toggle showing solution or not.
+echo '<div style="height: 3em; overflow: hidden; cursor: pointer;" onclick="this.style.height = this.style.height === \'auto\' ? \'3em\' : \'auto\';">';
+echo '<p>Show solution.</p>';
+
 foreach ( range( 0, $final->getHistorySteps() - 1 ) as $step ) {
 	$final->historyStep();
-	$decorator->decorate( $final );
+	$decorator->decorate( $final, false, [ $final->lastCell()->coords ] );
 }
 
-// $decorator->decorate( $final );
+echo '</div>';
+
+$decorator->toes();

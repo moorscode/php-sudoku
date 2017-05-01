@@ -49,6 +49,6 @@ class Cell {
 	}
 
 	public function __toString() {
-		return ( null === $this->get() ? '' : (string) $this->get() );
+		return ( null === $this->get() ? '&nbsp;' : (string) $this->get() );
 	}
 }

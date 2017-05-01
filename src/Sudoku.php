@@ -48,6 +48,8 @@ class Sudoku {
 
 	/**
 	 * Play the game
+	 *
+	 * @return BoardInterface
 	 */
 	public function play() {
 		$board = clone $this->board;
