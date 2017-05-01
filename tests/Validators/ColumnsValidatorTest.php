@@ -7,7 +7,17 @@ use Sudoku\Board;
 
 class ColumnsValidatorTest extends TestCase {
 	public function testValidateEmptyBoard() {
-		$board = new Board( 9 );
+		$board = new Board( [
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+		] );
 
 		$validator = new ColumnsValidator();
 		$this->assertFalse( $validator->validate( $board ) );
@@ -27,7 +37,7 @@ class ColumnsValidatorTest extends TestCase {
 
 		];
 
-		$board = new Board( 9, $known );
+		$board = new Board( $known );
 
 		$validator = new ColumnsValidator();
 		$this->assertFalse( $validator->validate( $board ) );
@@ -35,18 +45,18 @@ class ColumnsValidatorTest extends TestCase {
 
 	public function testValidateValidColumns() {
 		$known = [
-			[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-			[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-			[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-			[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-			[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-			[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-			[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-			[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-			[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+			[ 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
+			[ 2, 2, 2, 2, 2, 2, 2, 2, 2 ],
+			[ 3, 3, 3, 3, 3, 3, 3, 3, 3 ],
+			[ 4, 4, 4, 4, 4, 4, 4, 4, 4 ],
+			[ 5, 5, 5, 5, 5, 5, 5, 5, 5 ],
+			[ 6, 6, 6, 6, 6, 6, 6, 6, 6 ],
+			[ 7, 7, 7, 7, 7, 7, 7, 7, 7 ],
+			[ 8, 8, 8, 8, 8, 8, 8, 8, 8 ],
+			[ 9, 9, 9, 9, 9, 9, 9, 9, 9 ],
 		];
 
-		$board = new Board( 9, $known );
+		$board = new Board( $known );
 
 		$validator = new ColumnsValidator();
 		$this->assertTrue( $validator->validate( $board ) );

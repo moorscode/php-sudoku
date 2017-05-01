@@ -7,7 +7,17 @@ use Sudoku\Board;
 
 class GroupsValidatorTest extends TestCase {
 	public function testValidateEmptyBoard() {
-		$board = new Board( 9 );
+		$board = new Board( [
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+		] );
 
 		$validator = new GroupsValidator();
 		$this->assertFalse( $validator->validate( $board ) );
@@ -27,26 +37,27 @@ class GroupsValidatorTest extends TestCase {
 
 		];
 
-		$board = new Board( 9, $known );
+		$board = new Board( $known );
 
 		$validator = new GroupsValidator();
 		$this->assertFalse( $validator->validate( $board ) );
 	}
 
 	public function testValidateValidGroups() {
+		// Invalid board, but all valid groups.
 		$known = [
-			[ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-			[ 4, 5, 6, 7, 8, 9, 1, 2, 3 ],
-			[ 7, 8, 9, 1, 2, 3, 4, 5, 6 ],
-			[ 2, 3, 4, 5, 6, 7, 8, 9, 1 ],
-			[ 5, 6, 7, 8, 9, 1, 2, 3, 4 ],
-			[ 8, 9, 1, 2, 3, 4, 5, 6, 7 ],
-			[ 3, 4, 5, 6, 7, 8, 9, 1, 2 ],
-			[ 6, 7, 8, 9, 1, 2, 3, 4, 5 ],
-			[ 9, 1, 2, 3, 4, 5, 6, 7, 8 ],
+			[ 1, 2, 3, 1, 2, 3, 1, 2, 3 ],
+			[ 4, 5, 6, 4, 5, 6, 4, 5, 6 ],
+			[ 7, 8, 9, 7, 8, 9, 7, 8, 9 ],
+			[ 1, 2, 3, 1, 2, 3, 1, 2, 3 ],
+			[ 4, 5, 6, 4, 5, 6, 4, 5, 6 ],
+			[ 7, 8, 9, 7, 8, 9, 7, 8, 9 ],
+			[ 1, 2, 3, 1, 2, 3, 1, 2, 3 ],
+			[ 4, 5, 6, 4, 5, 6, 4, 5, 6 ],
+			[ 7, 8, 9, 7, 8, 9, 7, 8, 9 ],
 		];
 
-		$board = new Board( 9, $known );
+		$board = new Board( $known );
 
 		$validator = new GroupsValidator();
 		$this->assertTrue( $validator->validate( $board ) );
