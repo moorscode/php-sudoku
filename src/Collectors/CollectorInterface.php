@@ -2,24 +2,24 @@
 
 namespace Sudoku\Collectors;
 
-use Sudoku\Board;
+use Sudoku\BoardInterface;
 use Sudoku\Cell;
 use Sudoku\Coords;
 
 interface CollectorInterface {
 	/**
-	 * @param Board  $board
-	 * @param Coords $coords
+	 * @param BoardInterface $board
+	 * @param Coords         $coords
 	 *
 	 * @return Cell[] Cells
 	 */
-	public function collect( Board $board, Coords $coords );
+	public function collect( BoardInterface $board, Coords $coords );
 
 	/**
-	 * @param Board  $board
-	 * @param Coords $coords
+	 * @param BoardInterface $board
+	 * @param Coords         $coords
 	 *
 	 * @return Coords[] Coords of the cells.
 	 */
-	public function getCoords( Board $board, Coords $coords );
+	public function getCoords( BoardInterface $board, Coords $coords );
 }

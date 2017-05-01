@@ -8,12 +8,12 @@
 
 namespace Sudoku\Validators;
 
-use Sudoku\Board;
+use Sudoku\BoardInterface;
 use Sudoku\Collectors\RowCollector;
 use Sudoku\Coords;
 
 class RowsValidator implements ValidatorInterface {
-	public function validate( Board $board ) {
+	public function validate( BoardInterface $board ) {
 		$collector = new RowCollector();
 		$boardSize = $board->getSize();
 
@@ -29,7 +29,7 @@ class RowsValidator implements ValidatorInterface {
 			}, $cells );
 
 			$numbers = array_unique( array_filter( $numbers ) );
-			$valid = $valid && array_intersect( $expected, $numbers ) === $expected;
+			$valid   = $valid && array_intersect( $expected, $numbers ) === $expected;
 		}
 
 		return $valid;

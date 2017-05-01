@@ -2,10 +2,15 @@
 
 namespace Sudoku\Validators;
 
-use Sudoku\Board;
+use Sudoku\BoardInterface;
 
 class Validator implements ValidatorInterface {
-	public function validate( Board $board ) {
+	/**
+	 * @param BoardInterface $board
+	 *
+	 * @return bool
+	 */
+	public function validate( BoardInterface $board ) {
 		if ( ! $board->done() ) {
 			return false;
 		}

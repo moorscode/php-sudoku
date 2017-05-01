@@ -2,8 +2,8 @@
 
 namespace Sudoku\Validators;
 
-use Sudoku\Board;
+use Sudoku\BoardInterface;
 
 interface ValidatorInterface {
-	public function validate( Board $board );
+	public function validate( BoardInterface $board );
 }

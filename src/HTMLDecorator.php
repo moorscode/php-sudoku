@@ -3,7 +3,11 @@
 namespace Sudoku;
 
 class HTMLDecorator {
-	public function decorate( Board $board, $showOptions = true ) {
+	/**
+	 * @param BoardInterface $board
+	 * @param bool           $showOptions
+	 */
+	public function decorate( BoardInterface $board, $showOptions = true ) {
 
 		$cells = $this->flip( $board->getBoard() );
 		$boardSize = $board->getSize();
@@ -40,6 +44,11 @@ class HTMLDecorator {
 		echo '</table>';
 	}
 
+	/**
+	 * @param array $cells
+	 *
+	 * @return array
+	 */
 	protected function flip( array $cells ) {
 		$output = [];
 		foreach ( $cells as $x => $_x ) {

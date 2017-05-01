@@ -2,7 +2,7 @@
 
 namespace Sudoku\Algorithms;
 
-use Sudoku\Board;
+use Sudoku\BoardInterface;
 use Sudoku\Cell;
 use Sudoku\Collectors\ColumnCollector;
 use Sudoku\Coords;
@@ -13,12 +13,12 @@ class PairColumnCandidates implements AlgorithmInterface {
 	use DeterminePairFromCollector;
 
 	/**
-	 * @param Board  $board
-	 * @param Coords $coords
+	 * @param BoardInterface $board
+	 * @param Coords         $coords
 	 *
 	 * @return Cell
 	 */
-	public function run( Board $board, Coords $coords ) {
+	public function run( BoardInterface $board, Coords $coords ) {
 		return $this->findPairCandidates( new ColumnCollector(), $board, $coords );
 	}
 }

@@ -2,10 +2,10 @@
 
 namespace Sudoku;
 
-class Board {
+class Board implements BoardInterface {
 	use FlattenCollection;
 
-	protected $boardSize = 9;
+	protected $boardSize;
 	protected $board = [ [] ];
 
 	/**

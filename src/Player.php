@@ -22,11 +22,11 @@ class Player {
 	}
 
 	/**
-	 * @param Board $board
+	 * @param BoardInterface $board
 	 *
-	 * @return Board
+	 * @return BoardInterface
 	 */
-	public function play( Board $board ) {
+	public function play( BoardInterface $board ) {
 		do {
 			$boardHash = BoardHasher::hash( $board );
 			foreach ( $this->unfilled( $board ) as $coords ) {
@@ -43,11 +43,11 @@ class Player {
 	}
 
 	/**
-	 * @param Board $board
+	 * @param BoardInterface $board
 	 *
 	 * @return \Generator
 	 */
-	protected function unfilled( Board $board ) {
+	protected function unfilled( BoardInterface $board ) {
 		$boardSize = $board->getSize();
 		$positions = range( 0, $boardSize - 1 );
 
@@ -62,10 +62,10 @@ class Player {
 	}
 
 	/**
-	 * @param Board  $board
-	 * @param Coords $coords
+	 * @param BoardInterface $board
+	 * @param Coords         $coords
 	 */
-	protected function applyAlgorithms( Board $board, Coords $coords ) {
+	protected function applyAlgorithms( BoardInterface $board, Coords $coords ) {
 		foreach ( $this->algorithms as $algorithm ) {
 			$this->algorithmCalls ++;
 
@@ -94,10 +94,10 @@ class Player {
 	}
 
 	/**
-	 * @param Board  $board
-	 * @param Coords $coords
+	 * @param BoardInterface $board
+	 * @param Coords         $coords
 	 */
-	protected function runRelatedCells( Board $board, Coords $coords ) {
+	protected function runRelatedCells( BoardInterface $board, Coords $coords ) {
 		foreach ( $this->getCollectors() as $collector ) {
 			$relatedCoords = $collector->getCoords( $board, $coords );
 

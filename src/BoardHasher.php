@@ -3,7 +3,12 @@
 namespace Sudoku;
 
 class BoardHasher {
-	public static function hash( Board $board ) {
+	/**
+	 * @param BoardInterface $board
+	 *
+	 * @return string
+	 */
+	public static function hash( BoardInterface $board ) {
 		$cells = $board->getBoard();
 
 		$hash = [];

@@ -8,19 +8,18 @@
 
 namespace Sudoku\Validators;
 
-
-use Sudoku\Board;
+use Sudoku\BoardInterface;
 use Sudoku\Collectors\GroupCollector;
 use Sudoku\Coords;
 
 class GroupsValidator implements ValidatorInterface {
 
 	/**
-	 * @param Board $board
+	 * @param BoardInterface $board
 	 *
 	 * @return bool
 	 */
-	public function validate( Board $board ) {
+	public function validate( BoardInterface $board ) {
 		$collector = new GroupCollector();
 		$boardSize = $board->getSize();
 

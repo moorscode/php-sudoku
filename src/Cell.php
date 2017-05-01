@@ -13,10 +13,10 @@ class Cell {
 	}
 
 	public function set( $number ) {
-		$number       = (int) $number;
-		$number       = ( $number === 0 ) ? null : $number;
-		$this->number = $number;
+		$number = (int) $number;
+		$number = ( $number === 0 ) ? null : $number;
 
+		$this->number = $number;
 		if ( $this->number !== null ) {
 			$this->options = [];
 		}

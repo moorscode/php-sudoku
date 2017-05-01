@@ -8,18 +8,18 @@
 
 namespace Sudoku\Validators;
 
-use Sudoku\Board;
+use Sudoku\BoardInterface;
 use Sudoku\Collectors\ColumnCollector;
 use Sudoku\Coords;
 
 class ColumnsValidator implements ValidatorInterface {
 
 	/**
-	 * @param Board $board
+	 * @param BoardInterface $board
 	 *
 	 * @return bool
 	 */
-	public function validate( Board $board ) {
+	public function validate( BoardInterface $board ) {
 		$collector = new ColumnCollector();
 		$boardSize = $board->getSize();
 
@@ -35,7 +35,7 @@ class ColumnsValidator implements ValidatorInterface {
 			}, $cells );
 
 			$numbers = array_unique( array_filter( $numbers ) );
-			$valid = $valid && array_intersect( $expected, $numbers ) === $expected;
+			$valid   = $valid && array_intersect( $expected, $numbers ) === $expected;
 		}
 
 		return $valid;

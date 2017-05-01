@@ -7,12 +7,12 @@ use Sudoku\Collectors\CollectorInterface;
 trait DeterminePairFromCollector {
 	/**
 	 * @param CollectorInterface $collector
-	 * @param Board              $board
+	 * @param BoardInterface     $board
 	 * @param Coords             $coords
 	 *
 	 * @return Cell
 	 */
-	protected function findPairCandidates( CollectorInterface $collector, Board $board, Coords $coords ) {
+	protected function findPairCandidates( CollectorInterface $collector, BoardInterface $board, Coords $coords ) {
 		$cell = $board->get( $coords );
 		if ( null !== $cell->get() ) {
 			return $cell;
@@ -54,7 +54,7 @@ trait DeterminePairFromCollector {
 		}
 
 		if ( [] !== $remove ) {
-			foreach ( $cells as $_cell) {
+			foreach ( $cells as $_cell ) {
 				array_map( [ $_cell, 'removeOption' ], $remove );
 			}
 		}

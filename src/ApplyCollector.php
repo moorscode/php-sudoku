@@ -9,12 +9,12 @@ trait ApplyCollector {
 
 	/**
 	 * @param CollectorInterface $collector
-	 * @param Board              $board
+	 * @param BoardInterface     $board
 	 * @param Coords             $coords
 	 *
 	 * @return Cell
 	 */
-	protected function applyCollector( CollectorInterface $collector, Board $board, Coords $coords ) {
+	protected function applyCollector( CollectorInterface $collector, BoardInterface $board, Coords $coords ) {
 		$cell = $board->get( $coords );
 		if ( $cell->get() ) {
 			return $cell;

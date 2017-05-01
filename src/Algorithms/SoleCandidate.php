@@ -2,19 +2,19 @@
 
 namespace Sudoku\Algorithms;
 
-use Sudoku\Board;
+use Sudoku\BoardInterface;
 use Sudoku\Cell;
 use Sudoku\Coords;
 
 class SoleCandidate implements AlgorithmInterface {
 
 	/**
-	 * @param Board  $board
-	 * @param Coords $coords
+	 * @param BoardInterface $board
+	 * @param Coords         $coords
 	 *
 	 * @return Cell
 	 */
-	public function run( Board $board, Coords $coords ) {
+	public function run( BoardInterface $board, Coords $coords ) {
 		$cell    = $board->get( $coords );
 		$options = $cell->getOptions();
 

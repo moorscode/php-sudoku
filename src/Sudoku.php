@@ -25,9 +25,9 @@ class Sudoku {
 	/**
 	 * Sudoku constructor.
 	 *
-	 * @param Board $board
+	 * @param BoardInterface $board
 	 */
-	public function __construct( Board $board ) {
+	public function __construct( BoardInterface $board ) {
 		$this->board      = $board;
 		$this->player     = new Player();
 		$this->validator  = new Validator();
@@ -50,44 +50,55 @@ class Sudoku {
 	 * Play the game
 	 */
 	public function play() {
-		$board = $this->board;
+		$board = clone $this->board;
 
-		$decorator = new HTMLDecorator();
-		$decorator->decorate( $board, false );
+		$results = new Result( $this->board );
+		$saved   = $results->load();
+		$loaded  = ( $saved !== null );
 
-		$start = microtime( true );
+		if ( ! $saved ) {
+			$start = microtime( true );
 
-		foreach ( [ 0, 1, 3, 10, 15 ] as $maxDepth ) {
-			$this->variations->setMaxDepth( $maxDepth );
+			foreach ( [ 0, 1, 3, 10, 15 ] as $maxDepth ) {
+				$this->variations->setMaxDepth( $maxDepth );
 
-			$result = $this->variations->run( $board );
-			if ( $result ) {
-				$board = $result;
-				break;
+				$result = $this->variations->run( $board );
+				if ( $result ) {
+					$board = $result;
+					break;
+				}
 			}
+
+			$end = microtime( true );
+
+			printf(
+				'<p>Algorithm calls: %s<br/>Time (after %d variations): %fs</p>',
+				number_format( $this->player->getAlgorithmCalls() ),
+				$this->variations->getVariationCount(),
+				$end - $start
+			);
+		} else {
+			$board = $saved;
 		}
 
-		$end = microtime( true );
-
-		printf(
-			'<p>Algorithm calls: %s<br/>Time (after %d variations): %fs</p>',
-			number_format( $this->player->getAlgorithmCalls() ),
-			$this->variations->getVariationCount(),
-			$end - $start
-		);
-
-		if ( $this->validator->validate( $board ) ) {
-			echo '<p>Solution has been found!</p>';
-			$decorator->decorate( $board );
+		if ( ! $this->validator->validate( $board ) ) {
+			return $this->board;
 		}
+
+		echo '<p>Solution has been found!</p>';
+		if ( ! $loaded ) {
+			$results->save( $board );
+		}
+
+		return $board;
 	}
 
 	/**
-	 * @param Board $board
+	 * @param BoardInterface $board
 	 *
 	 * @return bool
 	 */
-	public function run( Board $board ) {
+	public function run( BoardInterface $board ) {
 		$this->player->play( $board );
 
 		return $this->validator->validate( $board );

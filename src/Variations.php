@@ -20,13 +20,13 @@ class Variations {
 	}
 
 	/**
-	 * @param Board $board
-	 * @param int   $depth
+	 * @param BoardInterface $board
+	 * @param int            $depth
 	 *
-	 * @return Board
+	 * @return BoardInterface
 	 * @throws DepthException
 	 */
-	public function run( Board $board, $depth = 0 ) {
+	public function run( BoardInterface $board, $depth = 0 ) {
 		if ( $depth > $this->maxDepth ) {
 			throw new DepthException();
 		}
@@ -63,13 +63,13 @@ class Variations {
 	}
 
 	/**
-	 * @param Board $board
+	 * @param BoardInterface $board
 	 *
-	 * @param bool  $includeSource
+	 * @param bool           $includeSource
 	 *
 	 * @return \Generator
 	 */
-	public function variation( Board $board, $includeSource = false ) {
+	public function variation( BoardInterface $board, $includeSource = false ) {
 		if ( $includeSource ) {
 			yield $board;
 		}

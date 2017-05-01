@@ -7,12 +7,12 @@ use Sudoku\Collectors\CollectorInterface;
 trait DetermineSoleFromCollector {
 	/**
 	 * @param CollectorInterface $collector
-	 * @param Board              $board
+	 * @param BoardInterface     $board
 	 * @param Coords             $coords
 	 *
 	 * @return Cell
 	 */
-	protected function setSoleFromCollector( CollectorInterface $collector, Board $board, Coords $coords ) {
+	protected function setSoleFromCollector( CollectorInterface $collector, BoardInterface $board, Coords $coords ) {
 		$cell    = $board->get( $coords );
 		$options = $cell->getOptions();
 
