@@ -9,6 +9,21 @@ class Loader {
 			throw new \InvalidArgumentException( 'File supplied does not exist.' );
 		}
 
-		return include $path;
+		$data = include $path;
+
+		if ( is_string( $data ) ) {
+			if ( strpos( $data, ',' ) !== false ) {
+			$data = explode( ',', $data );
+			} else {
+				$data = str_split( $data );
+			}
+		}
+
+		if ( ! is_array( $data[0] ) ) {
+			$size = sqrt( count( $data ) );
+			$data = array_chunk( $data, $size );
+		}
+
+		return $data;
 	}
 }
