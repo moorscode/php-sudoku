@@ -50,7 +50,7 @@ class Board implements BoardInterface {
 	protected function initialize() {
 		foreach ( range( 0, $this->boardSize - 1 ) as $x ) {
 			foreach ( range( 0, $this->boardSize - 1 ) as $y ) {
-				$this->board[ $y ][ $x ] = new Cell( range( 1, $this->boardSize ) );
+				$this->set( new Coords( $x, $y ), new Cell( $this->cellOptions() ) );
 			}
 		}
 	}
@@ -91,5 +91,12 @@ class Board implements BoardInterface {
 	 */
 	public function __clone() {
 		$this->board = unserialize( serialize( $this->board ) );
+	}
+
+	/**
+	 * @return array
+	 */
+	public function cellOptions() {
+		return range( 1, $this->boardSize );
 	}
 }

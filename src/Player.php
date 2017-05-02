@@ -67,17 +67,7 @@ class Player {
 	 */
 	protected function applyAlgorithms( BoardInterface $board, Coords $coords ) {
 		foreach ( $this->algorithms as $algorithm ) {
-			$this->algorithmCalls ++;
-
-			// Run the algorithm on the cell.
-			$cell = $algorithm->run( $board, $coords );
-
-			// Update the cell on the board.
-			$board->set( $coords, $cell );
-
-			if ( null !== $cell->get() ) {
-				// Apply algorithm to nearby cells.
-				$this->runRelatedCells( $board, $coords );
+			if ( $this->applyAlgorithm( $board, $coords, $algorithm ) ) {
 				break;
 			}
 		}
@@ -88,25 +78,54 @@ class Player {
 	 */
 	protected function getCollectors() {
 		return [
-			new RowCollector(),
 			new ColumnCollector(),
+			new RowCollector(),
 		];
 	}
 
 	/**
+	 * @param array          $collectors
 	 * @param BoardInterface $board
 	 * @param Coords         $coords
 	 */
-	protected function runRelatedCells( BoardInterface $board, Coords $coords ) {
-		foreach ( $this->getCollectors() as $collector ) {
+	protected function runRelatedCells( array $collectors, BoardInterface $board, Coords $coords ) {
+		$changed = $board->get( $coords );
+
+		foreach ( $collectors as $collector ) {
 			$relatedCoords = $collector->getCoords( $board, $coords );
 
-			array_map( function ( $coords ) use ( $board ) {
+			array_map( function ( $coords ) use ( $board, $changed ) {
 				$cell = $board->get( $coords );
+				$cell->removeOption( $changed->get() );
 				if ( null === $cell->get() ) {
 					$this->applyAlgorithms( $board, $coords );
 				}
 			}, $relatedCoords );
 		}
+	}
+
+	/**
+	 * @param BoardInterface $board
+	 * @param Coords         $coords
+	 * @param                $algorithm
+	 *
+	 * @return bool
+	 */
+	protected function applyAlgorithm( BoardInterface $board, Coords $coords, $algorithm ) {
+		$this->algorithmCalls ++;
+
+		// Run the algorithm on the cell.
+		$cell = $algorithm->run( $board, $coords );
+
+		// Update the cell on the board.
+		$board->set( $coords, $cell );
+
+		if ( null !== $cell->get() ) {
+			$this->runRelatedCells( $this->getCollectors(), $board, $coords );
+
+			return true;
+		}
+
+		return false;
 	}
 }

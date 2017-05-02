@@ -9,8 +9,8 @@ trait FlattenCollection {
 	 * @return array
 	 */
 	protected function flatten( array $cells ) {
-		return array_map( function ( $cell ) {
+		return array_filter( array_map( function ( $cell ) {
 			return $cell->get();
-		}, $cells );
+		}, $cells ) );
 	}
 }

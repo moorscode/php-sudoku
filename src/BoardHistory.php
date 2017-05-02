@@ -80,4 +80,11 @@ class BoardHistory implements BoardInterface {
 	protected function addHistory( Coords $coords, Cell $cell ) {
 		$this->history[] = (object) [ 'coords' => $coords, 'cell' => $cell ];
 	}
+
+	/**
+	 * @return array
+	 */
+	public function cellOptions() {
+		return $this->board->cellOptions();
+	}
 }

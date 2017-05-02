@@ -30,4 +30,9 @@ interface BoardInterface {
 	 * @return array
 	 */
 	public function getBoard();
+
+	/**
+	 * @return array
+	 */
+	public function cellOptions();
 }

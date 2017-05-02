@@ -9,21 +9,10 @@
 namespace Sudoku\Collectors;
 
 use Sudoku\BoardInterface;
-use Sudoku\Cell;
 use Sudoku\Coords;
 
 class GroupCollector implements CollectorInterface {
-	/**
-	 * GroupCollector constructor.
-	 *
-	 * @param BoardInterface $board
-	 * @param Coords         $coords
-	 *
-	 * @return Cell[]
-	 */
-	public function collect( BoardInterface $board, Coords $coords ) {
-		return array_map( [ $board, 'get' ], $this->getCoords( $board, $coords ) );
-	}
+	use Collect;
 
 	/**
 	 * @param BoardInterface $board

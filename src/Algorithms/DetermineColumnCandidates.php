@@ -9,7 +9,6 @@ use Sudoku\Collectors\ColumnCollector;
 use Sudoku\Coords;
 
 class DetermineColumnCandidates implements AlgorithmInterface {
-
 	use ApplyCollector;
 
 	/**

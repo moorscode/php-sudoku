@@ -5,7 +5,7 @@ namespace Sudoku;
 use Sudoku\Collectors\CollectorInterface;
 
 trait ApplyCollector {
-	use FlattenCollection;
+	use OptionRemover;
 
 	/**
 	 * @param CollectorInterface $collector
@@ -16,15 +16,9 @@ trait ApplyCollector {
 	 */
 	protected function applyCollector( CollectorInterface $collector, BoardInterface $board, Coords $coords ) {
 		$cell = $board->get( $coords );
-		if ( $cell->get() ) {
-			return $cell;
-		}
 
 		// Determine options.
-		$group = $collector->collect( $board, $coords );
-
-		$available = array_intersect( range( 1, $board->getSize() ), $this->flatten( $group ) );
-		array_map( [ $cell, 'removeOption' ], $available );
+		$this->removeOptions( $collector->collect( $board, $coords ), $board->cellOptions() );
 
 		return $cell;
 	}

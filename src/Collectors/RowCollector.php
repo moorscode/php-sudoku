@@ -3,20 +3,10 @@
 namespace Sudoku\Collectors;
 
 use Sudoku\BoardInterface;
-use Sudoku\Cell;
 use Sudoku\Coords;
 
 class RowCollector implements CollectorInterface {
-
-	/**
-	 * @param BoardInterface $board
-	 * @param Coords         $coords
-	 *
-	 * @return Cell[]
-	 */
-	public function collect( BoardInterface $board, Coords $coords ) {
-		return array_map( [ $board, 'get' ], $this->getCoords( $board, $coords ) );
-	}
+	use Collect;
 
 	/**
 	 * @param BoardInterface $board
