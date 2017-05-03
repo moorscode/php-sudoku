@@ -19,22 +19,12 @@ $decorator->head();
 $decorator->decorate( $board, false );
 
 $sudoko = new Sudoku( $board );
-
-/** @var BoardHistory $final */
 $final = $sudoko->play();
 
-$final->rewind();
-$final->getHistorySteps();
-
-// Toggle showing solution or not.
-echo '<div style="height: 3em; overflow: hidden; cursor: pointer;" onclick="this.style.height = this.style.height === \'auto\' ? \'3em\' : \'auto\';">';
-echo '<p>Show solution.</p>';
-
-foreach ( range( 0, $final->getHistorySteps() - 1 ) as $step ) {
-	$final->historyStep();
-	$decorator->decorate( $final, false, [ $final->lastCell()->coords ] );
+if ( $final instanceof BoardHistoryInterface ) {
+	$decorator->showHistory( $final );
+} else {
+	$decorator->decorate( $final );
 }
-
-echo '</div>';
 
 $decorator->toes();
