@@ -34,8 +34,8 @@ class Sudoku {
 		$this->variations = new Variations();
 		$this->variations->setRunCallback( [ $this, 'run' ] );
 
-		$this->player->addAlgorithm( new DetermineColumnCandidates() );
 		$this->player->addAlgorithm( new DetermineRowCandidates() );
+		$this->player->addAlgorithm( new DetermineColumnCandidates() );
 		$this->player->addAlgorithm( new DetermineGroupCandidates() );
 
 		$this->player->addAlgorithm( new SoleCandidate() );
