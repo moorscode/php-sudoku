@@ -105,13 +105,13 @@ class Player {
 	}
 
 	/**
-	 * @param BoardInterface $board
-	 * @param Coords         $coords
-	 * @param                $algorithm
+	 * @param BoardInterface     $board
+	 * @param Coords             $coords
+	 * @param AlgorithmInterface $algorithm
 	 *
 	 * @return bool
 	 */
-	protected function applyAlgorithm( BoardInterface $board, Coords $coords, $algorithm ) {
+	protected function applyAlgorithm( BoardInterface $board, Coords $coords, AlgorithmInterface $algorithm ) {
 		$this->algorithmCalls ++;
 
 		// Run the algorithm on the cell.
