@@ -2,7 +2,7 @@
 
 namespace Sudoku;
 
-class BoardHistory implements BoardInterface {
+class BoardHistory implements BoardInterface, BoardHistoryInterface {
 	protected $board;
 	protected $history = [];
 	protected $historyIndex = 0;
@@ -49,6 +49,13 @@ class BoardHistory implements BoardInterface {
 		return $this->board->getBoard();
 	}
 
+	/**
+	 * @return array
+	 */
+	public function cellOptions() {
+		return $this->board->cellOptions();
+	}
+
 	public function getHistorySteps() {
 		return count( $this->history );
 	}
@@ -79,12 +86,5 @@ class BoardHistory implements BoardInterface {
 
 	protected function addHistory( Coords $coords, Cell $cell ) {
 		$this->history[] = (object) [ 'coords' => $coords, 'cell' => $cell ];
-	}
-
-	/**
-	 * @return array
-	 */
-	public function cellOptions() {
-		return $this->board->cellOptions();
 	}
 }

@@ -94,4 +94,20 @@ EO_HTML;
 
 		return $output;
 	}
+
+	public function showHistory( BoardHistoryInterface $board ) {
+		$board->rewind();
+		$board->getHistorySteps();
+
+		// Toggle showing solution or not.
+		echo '<div style="height: 3em; overflow: hidden; cursor: pointer;" onclick="this.style.height = this.style.height === \'auto\' ? \'3em\' : \'auto\';">';
+		echo '<p>Show solution.</p>';
+
+		foreach ( range( 0, $board->getHistorySteps() - 1 ) as $step ) {
+			$board->historyStep();
+			$board->decorate( $board, false, [ $board->lastCell()->coords ] );
+		}
+
+		echo '</div>';
+	}
 }
