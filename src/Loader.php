@@ -4,28 +4,20 @@ namespace Sudoku;
 
 class Loader {
 	/**
-	 * @param $game
+	 * @param $data
 	 *
 	 * @return array|string|null
 	 * @throws \Exception
 	 */
-	public function load( $game ) {
-		$data = null;
-
-		$path = dirname( __DIR__ ) . DIRECTORY_SEPARATOR . 'games' . DIRECTORY_SEPARATOR . $game . '.php';
+	public function load( $data ) {
+		$path = dirname( __DIR__ ) . DIRECTORY_SEPARATOR . 'games' . DIRECTORY_SEPARATOR . $data . '.php';
 		if ( is_file( $path ) ) {
 			$data = include $path;
 		}
 
-		if ( ! isset( $data ) && is_string( $game ) && strlen( $game ) > 81 ) {
-			if ( strpos( $game, ',' ) !== false ) {
-				$data = explode( ',', $game );
-			} else {
-				$data = str_split( $game );
-			}
-		}
+		$data = $this->parseData( $data );
 
-		if ( ! isset($data ) ) {
+		if ( empty( $data ) ) {
 			throw new \Exception( 'Game could not be found.' );
 		}
 
@@ -35,5 +27,28 @@ class Loader {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * @param $data
+	 *
+	 * @return array
+	 */
+	protected function parseData( $data ) {
+		if ( is_string( $data ) && strlen( $data ) > 80 ) {
+			if ( strpos( $data, ',' ) !== false ) {
+				$data = explode( ',', $data );
+			} else {
+				$data = str_split( $data );
+			}
+
+			return $data;
+		}
+
+		if ( is_array( $data ) ) {
+			return $data;
+		}
+
+		return null;
 	}
 }

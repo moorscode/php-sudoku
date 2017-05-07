@@ -21,7 +21,7 @@ class Player {
 	 */
 	public function __construct( StatisticsInterface $statistics ) {
 		$this->statistics = $statistics;
-		$this->statistics->register( $this->statisticsIdentifier, 'Algorithm calls: %s' );
+		$this->statistics->register( $this->statisticsIdentifier, 'Algorithm calls: %s', 0, 'number_format' );
 	}
 
 	/**

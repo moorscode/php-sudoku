@@ -10,6 +10,7 @@ use Sudoku\Algorithms\SoleCandidate;
 use Sudoku\Algorithms\SoleGroupCandidate;
 use Sudoku\Algorithms\SoleRowCandidate;
 use Sudoku\Algorithms\SoleColumnCandidate;
+use Sudoku\Exceptions\DepthException;
 use Sudoku\Validators\Validator;
 
 class Sudoku {

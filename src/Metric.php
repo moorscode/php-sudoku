@@ -14,9 +14,10 @@ class Metric {
 	 * @param     $format
 	 * @param int $defaultValue
 	 */
-	public function __construct( $format, $defaultValue = 0 ) {
+	public function __construct( $format, $defaultValue = 0, callable $displayCallback = null ) {
 		$this->format = $format;
 		$this->value = $defaultValue;
+		$this->display = $displayCallback ?: [ $this, 'get' ];
 	}
 
 	/**
@@ -44,6 +45,6 @@ class Metric {
 	 * @return string
 	 */
 	public function __toString() {
-		return sprintf( $this->format, $this->value );
+		return sprintf( $this->format, call_user_func( $this->display, $this->value ) );
 	}
 }
