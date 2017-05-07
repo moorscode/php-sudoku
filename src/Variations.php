@@ -17,7 +17,7 @@ class Variations {
 	/**
 	 * Variations constructor.
 	 *
-	 * @param StatisticsInterface $statistics
+	 * @param StatisticsInterface|null $statistics
 	 */
 	public function __construct( StatisticsInterface $statistics ) {
 		$this->statistics = $statistics;

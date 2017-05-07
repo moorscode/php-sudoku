@@ -42,6 +42,7 @@ class Sudoku {
 		$this->player->addAlgorithm( new DetermineColumnCandidates() );
 		$this->player->addAlgorithm( new DetermineGroupCandidates() );
 
+		$this->player->addAlgorithm( new SoleCandidate() );
 		$this->player->addAlgorithm( new SoleRowCandidate() );
 		$this->player->addAlgorithm( new SoleGroupCandidate() );
 		$this->player->addAlgorithm( new SoleColumnCandidate() );

@@ -48,11 +48,6 @@ class Cell {
 	public function removeOption( $option ) {
 		unset( $this->options[ $option ] );
 
-		// If only one option remains, set it.
-		if ( count( $this->options ) === 1 ) {
-			$this->set( $this->getOptions()[0] );
-		}
-
 		if ( empty( $this->options ) && empty( $this->number ) ) {
 			throw new InvalidMoveException();
 		}
