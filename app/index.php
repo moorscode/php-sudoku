@@ -18,7 +18,7 @@ $decorator = new HTMLDecorator();
 $decorator->head();
 $decorator->decorate( $board, false );
 
-$sudoko = new Sudoku( $board );
+$sudoko = new Sudoku( $board, new Statistics() );
 $final = $sudoko->play();
 
 if ( $final instanceof BoardHistoryInterface ) {

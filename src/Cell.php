@@ -8,13 +8,28 @@ class Cell {
 	protected $number;
 	protected $options = [];
 
+	/**
+	 * Cell constructor.
+	 *
+	 * @param array $options
+	 */
 	public function __construct( array $options = array() ) {
 		$this->options = array_flip( $options );
 	}
 
+	/**
+	 * @param $number
+	 *
+	 * @return $this
+	 * @throws InvalidMoveException
+	 */
 	public function set( $number ) {
 		$number = (int) $number;
 		$number = ( $number === 0 ) ? null : $number;
+
+		if ( $number && ! in_array( $number, $this->getOptions(), true ) ) {
+			throw new InvalidMoveException();
+		}
 
 		$this->number = $number;
 		if ( $this->number !== null ) {
@@ -24,12 +39,12 @@ class Cell {
 		return $this;
 	}
 
-	public function addOption( $option ) {
-		$this->options[ $option ] = true;
-
-		return $this;
-	}
-
+	/**
+	 * @param $option
+	 *
+	 * @return $this
+	 * @throws InvalidMoveException
+	 */
 	public function removeOption( $option ) {
 		unset( $this->options[ $option ] );
 
@@ -40,14 +55,23 @@ class Cell {
 		return $this;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getOptions() {
 		return array_keys( $this->options );
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get() {
 		return $this->number;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function __toString() {
 		return ( null === $this->get() ? '&nbsp;' : (string) $this->get() );
 	}

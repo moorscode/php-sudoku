@@ -25,14 +25,18 @@ class Sudoku {
 	/**
 	 * Sudoku constructor.
 	 *
-	 * @param BoardInterface $board
+	 * @param BoardInterface           $board
+	 * @param StatisticsInterface|null $statistics
 	 */
-	public function __construct( BoardInterface $board ) {
+	public function __construct( BoardInterface $board, StatisticsInterface $statistics = null ) {
+		$this->statistics = $statistics ?: new NullStatistics();
+
 		$this->board      = $board;
-		$this->player     = new Player();
-		$this->validator  = new Validator();
-		$this->variations = new Variations();
+		$this->player     = new Player( $this->statistics );
+		$this->variations = new Variations( $this->statistics );
 		$this->variations->setRunCallback( [ $this, 'run' ] );
+
+		$this->validator  = new Validator();
 
 		$this->player->addAlgorithm( new DetermineRowCandidates() );
 		$this->player->addAlgorithm( new DetermineColumnCandidates() );
@@ -55,8 +59,8 @@ class Sudoku {
 		$board = clone $this->board;
 
 		$results = new Result( $this->board );
-		$saved   = $results->load();
-		$loaded  = ( $saved !== null );
+//		$saved   = $results->load();
+		$saved = null;
 
 		if ( ! $saved ) {
 			$start = microtime( true );
@@ -64,8 +68,13 @@ class Sudoku {
 			foreach ( [ 0, 1, 3, 10, 15 ] as $maxDepth ) {
 				$this->variations->setMaxDepth( $maxDepth );
 
-				$result = $this->variations->run( $board );
-				if ( $result ) {
+				try {
+					$result = $this->variations->run( $board );
+				} catch ( \Exception $e ) {
+					$result = null;
+				}
+
+				if ( $result instanceof BoardInterface ) {
 					$board = $result;
 					break;
 				}
@@ -73,24 +82,21 @@ class Sudoku {
 
 			$end = microtime( true );
 
-			printf(
-				'<p>Algorithm calls: %s<br/>Time (after %d variations): %fs</p>',
-				number_format( $this->player->getAlgorithmCalls() ),
-				$this->variations->getVariationCount(),
-				$end - $start
-			);
+			if ( ! $this->validator->validate( $board ) ) {
+				return $this->board;
+			}
+
+			$results->save( $board );
+
+			$this->statistics->register( 'time', 'Time: %fs' );
+			$this->statistics->set( 'time', $end - $start );
+
+			$this->statistics->display();
 		} else {
 			$board = $saved;
 		}
 
-		if ( ! $this->validator->validate( $board ) ) {
-			return $this->board;
-		}
-
 		echo '<p>Solution has been found!</p>';
-		if ( ! $loaded ) {
-			$results->save( $board );
-		}
 
 		return $board;
 	}

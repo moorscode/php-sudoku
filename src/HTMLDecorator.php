@@ -105,7 +105,7 @@ EO_HTML;
 
 		foreach ( range( 0, $board->getHistorySteps() - 1 ) as $step ) {
 			$board->historyStep();
-			$board->decorate( $board, false, [ $board->lastCell()->coords ] );
+			$this->decorate( $board, false, [ $board->lastCell()->coords ] );
 		}
 
 		echo '</div>';

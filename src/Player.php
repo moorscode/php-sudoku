@@ -11,8 +11,18 @@ class Player {
 	/** @var AlgorithmInterface[] Algorithms */
 	protected $algorithms;
 
-	/** @var int Number of algorithm calls */
-	protected $algorithmCalls = 0;
+	protected $statisticsIdentifier = 'algorithmCalls';
+	protected $statistics;
+
+	/**
+	 * Player constructor.
+	 *
+	 * @param StatisticsInterface $statistics
+	 */
+	public function __construct( StatisticsInterface $statistics ) {
+		$this->statistics = $statistics;
+		$this->statistics->register( $this->statisticsIdentifier, 'Algorithm calls: %s' );
+	}
 
 	/**
 	 * @param AlgorithmInterface $algorithm
@@ -23,8 +33,6 @@ class Player {
 
 	/**
 	 * @param BoardInterface $board
-	 *
-	 * @return BoardInterface
 	 */
 	public function play( BoardInterface $board ) {
 		do {
@@ -33,13 +41,6 @@ class Player {
 				$this->applyAlgorithms( $board, $coords );
 			}
 		} while ( $boardHash !== BoardHasher::hash( $board ) );
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getAlgorithmCalls() {
-		return $this->algorithmCalls;
 	}
 
 	/**
@@ -112,7 +113,7 @@ class Player {
 	 * @return bool
 	 */
 	protected function applyAlgorithm( BoardInterface $board, Coords $coords, AlgorithmInterface $algorithm ) {
-		$this->algorithmCalls ++;
+		$this->statistics->increase( $this->statisticsIdentifier );
 
 		// Run the algorithm on the cell.
 		$cell = $algorithm->run( $board, $coords );

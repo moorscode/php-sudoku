@@ -7,16 +7,21 @@ use Sudoku\Exceptions\InvalidMoveException;
 
 class Variations {
 	protected $maxDepth = 0;
-	protected $variationCount = 0;
 	protected $runCallback;
 
 	protected $boards = [];
 
+	protected $statisticsIdentifier = 'variations';
+	protected $statistics;
+
 	/**
-	 * @return int
+	 * Variations constructor.
+	 *
+	 * @param StatisticsInterface $statistics
 	 */
-	public function getVariationCount() {
-		return $this->variationCount;
+	public function __construct( StatisticsInterface $statistics ) {
+		$this->statistics = $statistics;
+		$this->statistics->register( $this->statisticsIdentifier, 'Variations: %d' );
 	}
 
 	/**
@@ -34,7 +39,7 @@ class Variations {
 		foreach ( $this->variation( $board, $depth === 0 ) as $variation ) {
 			$hash = BoardHasher::hash( $variation );
 			if ( ! array_key_exists( $hash, $this->boards ) ) {
-				$this->variationCount ++;
+				$this->statistics->increase( $this->statisticsIdentifier );
 
 				try {
 					// Callback will return when the board is solved.
