@@ -11,7 +11,8 @@ class Variations {
 
 	protected $boards = [];
 
-	protected $statistics;
+	protected $variationMetric;
+	protected $depthMetric;
 
 	/**
 	 * Variations constructor.
@@ -19,9 +20,8 @@ class Variations {
 	 * @param StatisticsInterface|null $statistics
 	 */
 	public function __construct( StatisticsInterface $statistics ) {
-		$this->statistics = $statistics;
-		$this->statistics->register( 'variations', 'Variations: %d', 0 );
-		$this->statistics->register( 'depth', 'Max depth: %d', 0 );
+		$this->variationMetric = $statistics->register( 'variations', 'Variations: %d', 0 );
+		$this->depthMetric     = $statistics->register( 'depth', 'Max depth: %d', 0 );
 	}
 
 	/**
@@ -32,7 +32,7 @@ class Variations {
 	 * @throws DepthException
 	 */
 	public function run( BoardInterface $board, $depth = 0 ) {
-		$this->statistics->max( 'depth', $depth );
+		$this->depthMetric->max( $depth );
 		if ( $depth > $this->maxDepth ) {
 			throw new DepthException();
 		}
@@ -40,7 +40,7 @@ class Variations {
 		foreach ( $this->variation( $board, $depth === 0 ) as $variation ) {
 			$hash = BoardHasher::hash( $variation );
 			if ( ! array_key_exists( $hash, $this->boards ) ) {
-				$this->statistics->increase( 'variations' );
+				$this->variationMetric->increase();
 
 				try {
 					// Callback will return when the board is solved.
@@ -56,7 +56,7 @@ class Variations {
 			$variation = $this->boards[ $hash ];
 
 			try {
-				$test = $this->run( $variation, $depth + 1);
+				$test = $this->run( $variation, $depth + 1 );
 				if ( null !== $test ) {
 					return $test;
 				}

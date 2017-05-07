@@ -11,8 +11,7 @@ class Player {
 	/** @var AlgorithmInterface[] Algorithms */
 	protected $algorithms;
 
-	protected $statisticsIdentifier = 'algorithmCalls';
-	protected $statistics;
+	protected $algorithmMetric;
 
 	/**
 	 * Player constructor.
@@ -20,8 +19,7 @@ class Player {
 	 * @param StatisticsInterface $statistics
 	 */
 	public function __construct( StatisticsInterface $statistics ) {
-		$this->statistics = $statistics;
-		$this->statistics->register( $this->statisticsIdentifier, 'Algorithm calls: %s', 0, 'number_format' );
+		$this->algorithmMetric = $statistics->register( 'algorythms', 'Algorithm calls: %s', 0, 'number_format' );
 	}
 
 	/**
@@ -113,7 +111,7 @@ class Player {
 	 * @return bool
 	 */
 	protected function applyAlgorithm( BoardInterface $board, Coords $coords, AlgorithmInterface $algorithm ) {
-		$this->statistics->increase( $this->statisticsIdentifier );
+		$this->algorithmMetric->increase();
 
 		// Run the algorithm on the cell.
 		$cell = $algorithm->run( $board, $coords );

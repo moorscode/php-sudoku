@@ -2,7 +2,7 @@
 
 namespace Sudoku;
 
-class Metric {
+class Metric implements MetricInterface {
 	/** @var int Value */
 	protected $value;
 	/** @var string Format */
@@ -32,6 +32,13 @@ class Metric {
 	 */
 	public function increase() {
 		$this->value++;
+	}
+
+	/**
+	 * @param $value
+	 */
+	public function max( $value ) {
+		$this->value = max( $this->value, $value );
 	}
 
 	/**

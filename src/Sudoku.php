@@ -10,7 +10,6 @@ use Sudoku\Algorithms\SoleCandidate;
 use Sudoku\Algorithms\SoleGroupCandidate;
 use Sudoku\Algorithms\SoleRowCandidate;
 use Sudoku\Algorithms\SoleColumnCandidate;
-use Sudoku\Exceptions\DepthException;
 use Sudoku\Validators\Validator;
 
 class Sudoku {
@@ -89,8 +88,8 @@ class Sudoku {
 
 			$results->save( $board );
 
-			$this->statistics->register( 'time', 'Time: %fs' );
-			$this->statistics->set( 'time', $end - $start );
+			$timeStatistic = $this->statistics->register( 'time', 'Time: %fs' );
+			$timeStatistic->set( $end - $start );
 
 			$this->statistics->display();
 		} else {
