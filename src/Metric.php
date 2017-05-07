@@ -3,16 +3,19 @@
 namespace Sudoku;
 
 class Metric implements MetricInterface {
-	/** @var int Value */
+	/** @var number Value */
 	protected $value;
 	/** @var string Format */
 	protected $format;
+	/** @var callable Display formatter */
+	protected $display;
 
 	/**
 	 * Metric constructor.
 	 *
-	 * @param     $format
-	 * @param int $defaultValue
+	 * @param               $format
+	 * @param int           $defaultValue
+	 * @param callable|null $displayCallback
 	 */
 	public function __construct( $format, $defaultValue = 0, callable $displayCallback = null ) {
 		$this->format = $format;
