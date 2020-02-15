@@ -24,8 +24,12 @@ class Validator implements ValidatorInterface {
 		$valid = true;
 		foreach ( $validators as $validator ) {
 			$valid = $valid && $validator->validate( $board );
+
+			if ( ! $valid ) {
+				return false;
+			}
 		}
 
-		return $valid;
+		return true;
 	}
 }
